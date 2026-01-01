@@ -1,0 +1,105 @@
+{
+  "name": "webappwebhook_progress 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webapp-test",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "29415a01-6c09-44b3-8289-d6cdc8f158a1",
+      "name": "Webhook",
+      "webhookId": "f5e8b178-4483-475e-a67c-6773fd486a60"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{$json.body.message}}\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f84b766b-2872-4df3-bd82-21e290aec01f",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "bAQrAw1tTZmPquF9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"message\": \"{{$json.choices[0].message.content}}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        528,
+        0
+      ],
+      "id": "2a565abf-3a61-4ed3-b431-b48dbdae6560",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "119fe9e4-e87b-4fec-bba9-5f7782edb1c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "de53d9fa0cad0f8d4f39b74c76af36598a43e934d22ca2b5a23c033c0575555a"
+  },
+  "id": "jWewrvZEK32hPjgc",
+  "tags": []
+}
